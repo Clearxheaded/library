@@ -22,11 +22,33 @@ document.addEventListener("DOMContentLoaded", () => {
         myLibrary.push(book);
     }
 
-    // addBookToLibrary("1984", "George Orwell", "120", true);
-    // addBookToLibrary("1984", "George Orwell", "120", false);
-    // console.log(myLibrary);
-
     function displayBooks() {
         bookContainer.innerHTML = "";
+        for (let i = 0; i < myLibrary.length; i++) {
+            const bookCard = document.createElement("div");
+            bookCard.classList.add("book-card");
+
+            const title = document.createElement("p");
+            title.textContent = myLibrary[i].title;
+            title.classList.add("book-title");
+            bookCard.appendChild(title);
+
+            const author = document.createElement("p");
+            author.textContent = myLibrary[i].author;
+            author.classList.add("book-author");
+            bookCard.appendChild(author);
+
+            const pages = document.createElement("p");
+            pages.textContent = myLibrary[i].pages;
+            pages.classList.add("book-pages");
+            bookCard.appendChild(pages);
+
+            const read = document.createElement("p");
+            read.textContent = myLibrary[i].read ? "Read" : "Not Read";
+            read.classList.add("book-read");
+            bookCard.appendChild(read);
+
+            bookContainer.appendChild(bookCard);
+        }
     }
 })
