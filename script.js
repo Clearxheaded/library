@@ -48,6 +48,14 @@ document.addEventListener("DOMContentLoaded", () => {
             read.classList.add("book-read");
             bookCard.appendChild(read);
 
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "Remove Book";
+            bookCard.appendChild(removeButton);
+
+            const toggleButton = document.createElement("button");
+            toggleButton.textContent = "Toggle Read Status";
+            bookCard.appendChild(toggleButton);
+
             bookContainer.appendChild(bookCard);
         }
     }
