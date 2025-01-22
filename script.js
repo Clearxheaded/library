@@ -50,10 +50,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const removeButton = document.createElement("button");
             removeButton.textContent = "Remove Book";
+            removeButton.classList.add("remove-btn");
+            removeButton.setAttribute("data-index", i);
+
+            removeButton.addEventListener("click", function () {
+                const index = removeButton.getAttribute("data-index");
+                myLibrary.splice(index, 1);
+                displayBooks();
+            });
+
             bookCard.appendChild(removeButton);
 
             const toggleButton = document.createElement("button");
             toggleButton.textContent = "Toggle Read Status";
+            toggleButton.classList.add("toggle-btn");
+            toggleButton.setAttribute("data-index", i);
+
+            toggleButton.addEventListener("click", function () {
+                const index = toggleButton.getAttribute("data-index");
+                const book = myLibrary[index];
+
+                book.read = !book.read;
+                read.textContent = book.read ? "Read" : "Not Read";
+            });
+
             bookCard.appendChild(toggleButton);
 
             bookContainer.appendChild(bookCard);
