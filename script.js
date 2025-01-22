@@ -2,6 +2,67 @@ document.addEventListener("DOMContentLoaded", () => {
     const myLibrary = [];
     const bookContainer = document.querySelector(".book-container");
 
+    // This is for adding a new book (I have to figure out how to do serverless)
+    const newBookButton = document.createElement("button");
+    newBookButton.classList.add("new-book-btn");
+    newBookButton.textContent = "New Book";
+    document.body.appendChild(newBookButton);
+
+    newBookButton.addEventListener("click", function () {
+        const form = document.createElement("form");
+        const titleInput = document.createElement("input");
+        titleInput.type = "text";
+        titleInput.placeholder = "Enter the title";
+        titleInput.required = true;
+
+        const authorInput = document.createElement("input");
+        authorInput.type = "text";
+        authorInput.placeholder = "Enter the author";
+        authorInput.required = true;
+
+        const pagesInput = document.createElement("input");
+        pagesInput.type = "number";
+        pagesInput.placeholder = "Enter the number of pages";
+        pagesInput.required = true;
+
+        const readInput = document.createElement("input");
+        readInput.type = "checkbox";
+        readInput.id = "read";
+        const readLabel = document.createElement("label");
+        readLabel.setAttribute("for", "read");
+        readLabel.textContent = "Read";
+
+        const submitButton = document.createElement("button");
+        submitButton.textContent = "Add Book";
+        submitButton.type = "submit";
+
+        form.appendChild(titleInput);
+        form.appendChild(authorInput);
+        form.appendChild(pagesInput);
+        form.appendChild(readLabel);
+        form.appendChild(readInput);
+        form.appendChild(submitButton);
+
+        document.body.appendChild(form);
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const title = titleInput.value;
+            const author = authorInput.value;
+            const pages = pagesInput.value;
+            const read = readInput.checked;
+
+            addBookToLibrary(title, author, pages, read);
+
+            displayBooks();
+
+            form.reset();
+            form.remove();
+        });
+    })
+
+
     function Book(title, author, pages, read) {
         this.title = title;
         this.author = author;
@@ -16,8 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function addBookToLibrary(title, author, pages, read) {
-        // let title = prompt("Enter the title of the book:", "The Great Gastby");
-        // let author = prompt("Enter the author of the book", "F. Scott Fitzgerald");
         const book = new Book(title, author, pages, read);
         myLibrary.push(book);
     }
@@ -79,4 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
             bookContainer.appendChild(bookCard);
         }
     }
+    addBookToLibrary("1984", "George Orwell", 328, true);
+    addBookToLibrary("The Great Gatsby", "F. Scott Fitzgerald", 180, false);
+    displayBooks(); // This will update the display with the newly added books
 })
