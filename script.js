@@ -1,15 +1,28 @@
 document.addEventListener("DOMContentLoaded", () => {
+    class Book {
+        constructor(title, author, pages, read) {
+            this.title = title;
+            this.author = author;
+            this.pages = pages;
+            this.read = read;
+        }
+
+        info() {
+            return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read ? "read" : "not read yet"}`;
+        }
+    }
+
     const myLibrary = [];
     const bookContainer = document.querySelector(".book-container");
 
-    // This is for adding a new book (I have to figure out how to do serverless)
     const newBookButton = document.createElement("button");
     newBookButton.classList.add("new-book-btn");
     newBookButton.textContent = "New Book";
     document.body.appendChild(newBookButton);
 
-    newBookButton.addEventListener("click", function () {
+    newBookButton.addEventListener("click", () => {
         const form = document.createElement("form");
+
         const titleInput = document.createElement("input");
         titleInput.type = "text";
         titleInput.placeholder = "Enter the title";
@@ -45,36 +58,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.body.appendChild(form);
 
-        form.addEventListener("submit", function (event) {
+        form.addEventListener("submit", (event) => {
             event.preventDefault();
 
             const title = titleInput.value;
             const author = authorInput.value;
-            const pages = pagesInput.value;
+            const pages = parseInt(pagesInput.value, 10);
             const read = readInput.checked;
 
             addBookToLibrary(title, author, pages, read);
-
             displayBooks();
 
             form.reset();
             form.remove();
         });
-    })
-
-
-    function Book(title, author, pages, read) {
-        this.title = title;
-        this.author = author;
-        this.pages = pages;
-        this.read = read;
-        this.info = function () {
-            if (read == True) {
-                return `${title} by ${author}, ${pages} pages, read`;
-            }
-            return `${title} by ${author}, ${pages} pages, not read yet`;
-        }
-    }
+    });
 
     function addBookToLibrary(title, author, pages, read) {
         const book = new Book(title, author, pages, read);
@@ -83,37 +81,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function displayBooks() {
         bookContainer.innerHTML = "";
-        for (let i = 0; i < myLibrary.length; i++) {
+
+        myLibrary.forEach((book, index) => {
             const bookCard = document.createElement("div");
             bookCard.classList.add("book-card");
 
             const title = document.createElement("p");
-            title.textContent = myLibrary[i].title;
+            title.textContent = book.title;
             title.classList.add("book-title");
             bookCard.appendChild(title);
 
             const author = document.createElement("p");
-            author.textContent = myLibrary[i].author;
+            author.textContent = book.author;
             author.classList.add("book-author");
             bookCard.appendChild(author);
 
             const pages = document.createElement("p");
-            pages.textContent = myLibrary[i].pages;
+            pages.textContent = `${book.pages} pages`;
             pages.classList.add("book-pages");
             bookCard.appendChild(pages);
 
             const read = document.createElement("p");
-            read.textContent = myLibrary[i].read ? "Read" : "Not Read";
+            read.textContent = book.read ? "Read" : "Not Read";
             read.classList.add("book-read");
             bookCard.appendChild(read);
 
             const removeButton = document.createElement("button");
             removeButton.textContent = "Remove Book";
             removeButton.classList.add("remove-btn");
-            removeButton.setAttribute("data-index", i);
-
-            removeButton.addEventListener("click", function () {
-                const index = removeButton.getAttribute("data-index");
+            removeButton.addEventListener("click", () => {
                 myLibrary.splice(index, 1);
                 displayBooks();
             });
@@ -123,22 +119,18 @@ document.addEventListener("DOMContentLoaded", () => {
             const toggleButton = document.createElement("button");
             toggleButton.textContent = "Toggle Read Status";
             toggleButton.classList.add("toggle-btn");
-            toggleButton.setAttribute("data-index", i);
-
-            toggleButton.addEventListener("click", function () {
-                const index = toggleButton.getAttribute("data-index");
-                const book = myLibrary[index];
-
+            toggleButton.addEventListener("click", () => {
                 book.read = !book.read;
-                read.textContent = book.read ? "Read" : "Not Read";
+                displayBooks();
             });
 
             bookCard.appendChild(toggleButton);
 
             bookContainer.appendChild(bookCard);
-        }
+        });
     }
+
     addBookToLibrary("1984", "George Orwell", 328, true);
     addBookToLibrary("The Great Gatsby", "F. Scott Fitzgerald", 180, false);
-    displayBooks(); // This will update the display with the newly added books
-})
+    displayBooks();
+});
