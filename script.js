@@ -61,10 +61,15 @@ document.addEventListener("DOMContentLoaded", () => {
         form.addEventListener("submit", (event) => {
             event.preventDefault();
 
-            const title = titleInput.value;
-            const author = authorInput.value;
+            const title = titleInput.value.trim();
+            const author = authorInput.value.trim();
             const pages = parseInt(pagesInput.value, 10);
             const read = readInput.checked;
+
+            if (!title || !author || isNaN(pages) || pages <= 0) {
+                alert("Please fill in all fields correctly.");
+                return; 
+            }
 
             addBookToLibrary(title, author, pages, read);
             displayBooks();
